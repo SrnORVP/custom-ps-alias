@@ -1,6 +1,8 @@
 
+Set-Alias -Name ppp -Value $PROFILE
+
 # Capture the command for intentional calls
-if ($args.Count -eq 0) { } else {
+if ($args.Count -eq 0) { $opts = "" } else {
     $opts = $args[0]
     # Write-Output $opts
 
@@ -22,6 +24,7 @@ if ($args.Count -eq 0) { } else {
         $pass = $args[1..$args.Count] -join ' '
     }
 }
+
 
 switch ($opts) {
     "venv" {
