@@ -1,6 +1,9 @@
 
 Set-Alias -Name ppp -Value $PROFILE
 
+(Get-ChildItem $profile).DirectoryName + ".\custom_cmdlet.ps1" | Import-Module
+
+
 # Capture the command for intentional calls
 if ($args.Count -eq 0) { $opts = "" } else {
     $opts = $args[0]
@@ -107,17 +110,17 @@ switch ($opts) {
         Invoke-Expression $com
     }
 
-    "dev" {
-        Write-Output $args.Count
+    # "dev" {
+    #     Write-Output $args.Count
 
-        $scpt = '\src\00-dev.ps1 '
-        $com = $mypf + $scpt + $pass
-        # Write-Output $orig
-        # Write-Output $mypf
-        # Write-Output $com
+    #     $scpt = '\src\00-dev.ps1 '
+    #     $com = $mypf + $scpt + $pass
+    #     # Write-Output $orig
+    #     # Write-Output $mypf
+    #     # Write-Output $com
 
-        Set-Location $mypf
-        Invoke-Expression $com
-        Set-Location $orig
-    }
+    #     Set-Location $mypf
+    #     Invoke-Expression $com
+    #     Set-Location $orig
+    # }
 }

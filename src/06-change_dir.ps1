@@ -6,19 +6,20 @@ $oper = $args[2]
 
 $fi = "*" + $opts + "*"
 
+$map = _get_map address.conf
+
 switch ($base) {
-    "rust" { $p = "D:\RustRoot\" }
-    "pyto" { $p = "D:\00-Pyto\" }
+    "rust" { $p = $map["RUST_DIR"] }
+    "pyto" { $p = $map["PYTO_DIR"] }
+    "app" {$p = $map["APP_DIR"] }
     "ps" {
-        $p = (Get-item $profile).DirectoryName
-        # echo $p
+        $p = _get_p_path
         $p = (Get-item $p).Parent.FullName
+        # echo $p
         $oper = $opts
         $fi = "WindowsPowerShell"
     }
 }
-
-# $ex = @("*test*", "*_*")
 
 $res = (Get-ChildItem -Path $p -Directory -Depth 2 -Filter $fi)
 
@@ -40,6 +41,8 @@ elseif ($res.Count -eq 0) {
     Write-Output "None found."
 }
 else {
+    Write-Output "More than one found, not moved."
+    Write-Output "---------------------------------"
     foreach ( $e in $res ) {
         Resolve-Path $e.FullName
         # Write-Output $res

@@ -1,13 +1,17 @@
 Set-StrictMode -Version Latest
 
-function _gd {
-    param (
-        [string]
-        $scriptFile
-    )
-    return ((Get-ChildItem $profile).DirectoryName + $scriptFile)
-}
+(Get-ChildItem $profile).DirectoryName + ".\custom_cmdlet.ps1" | Import-Module
 
-_gd ".\custom_cmdlet.ps1" | Import-Module
-_gd ".\src\get_file.ps1" | Import-Module
+
+$fp = _get_profile_file "address"
+$fp = _get_profile_file address.conf
+$fp
+
+
+$dir_map = _get_map address.conf
+$dir_map
+
+
+$base = "ps"
+
 

@@ -15,7 +15,7 @@ $curr = Get-Location
 # $test_dir = $curr.Path + '\src-tauri' + '\py-app'
 $test_dir = $curr.Path
 
-$com = (Get-item $profile).DirectoryName + '\02-active_venv.ps1 '
+$com = (Get-childitem $profile).DirectoryName + '\src\02-active_venv.ps1'
 Invoke-Expression $com
 
 # Invoke-Expression ". $profile venv"

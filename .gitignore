@@ -1,2 +1,6 @@
 terminal.txt
 .archive
+
+/.*
+*/__pycache__
+dev
