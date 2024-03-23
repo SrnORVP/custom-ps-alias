@@ -4,3 +4,6 @@ terminal.txt
 /.*
 */__pycache__
 dev
+address.conf
+
+Microsoft.VSCode_profile.ps1

@@ -8,17 +8,16 @@ $fi = "*" + $opts + "*"
 
 $map = _get_map address.conf
 
-switch ($base) {
-    "rust" { $p = $map["RUST_DIR"] }
-    "pyto" { $p = $map["PYTO_DIR"] }
-    "app" {$p = $map["APP_DIR"] }
-    "ps" {
+if ($base -eq "ps") {
         $p = _get_p_path
         $p = (Get-item $p).Parent.FullName
         # echo $p
         $oper = $opts
         $fi = "WindowsPowerShell"
     }
+else {
+    $up = $base.ToUpper() + "_DIR"
+    $p = $map[$up]
 }
 
 $res = (Get-ChildItem -Path $p -Directory -Depth 2 -Filter $fi)
@@ -37,9 +36,11 @@ if ($res.Count -eq 1) {
         "-expl" {explorer . }
     }
 }
+
 elseif ($res.Count -eq 0) {
     Write-Output "None found."
 }
+
 else {
     Write-Output "More than one found, not moved."
     Write-Output "---------------------------------"
