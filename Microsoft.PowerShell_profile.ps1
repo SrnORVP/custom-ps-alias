@@ -3,7 +3,8 @@ Set-Alias -Name pp -Value $PROFILE
 
 # Get-Module custom_cmdlet | Remove-Module
 (Get-ChildItem $profile).DirectoryName + ".\custom_cmdlet.ps1" | Import-Module
-
+(Get-ChildItem $profile).DirectoryName + ".\custom_dev_cmd.ps1" | Import-Module
+_beeftext_date
 
 # Capture the command for intentional calls
 if ($args.Count -eq 0) { $opts = "" } else {
@@ -25,7 +26,8 @@ if ($args.Count -eq 0) { $opts = "" } else {
         $pass = ''
     }
     else {
-        $pass = $args[1..$args.Count] -join ' '
+        $e = $args.Count - 1
+        $pass = $args[1..$e] -join ' '
     }
 }
 
@@ -38,73 +40,37 @@ switch ($opts) {
         Invoke-Expression $com
     }
 
-    "rs" {
+    { $_ -in "rs", "rust" } {
         $scpt = "\src\05-run_rust.ps1 "
         $com = $mypf + $scpt + $pass
         # Write-Output $com
         Invoke-Expression $com
     }
-    "rust" {
-        $com = ".`$PROFILE rs " + $pass
-        # Write-Output $com
-        Invoke-Expression $com
-    }
 
-    "ta" {
-        $scpt = "\src\07-tauri_rust.ps1 "
-        $com = $mypf + $scpt + $pass
-        # Write-Output $com
-        Invoke-Expression $com
-    }
-    "tauri" {
-        $com = ".`$PROFILE ta " + $pass
-        # Write-Output $com
-        Invoke-Expression $com
-    }
+    { $_ -in "ta", "tauri" } { Invoke-Expression "_invoke_tauri $pass" }
 
-
-    "pyo" {
+    { $_ -in "pyo", "pyo3" } {
         $scpt = "\src\01-setup_pyo3.ps1 "
         $com = $mypf + $scpt + $pass
         # Write-Output $com
         Invoke-Expression $com
     }
-    "pyo3" {
-        $com = ".`$PROFILE pyo " + $pass
-        # Write-Output $com
-        Invoke-Expression $com
-    }
 
-    "py" {
+    { $_ -in "py", "pyr" , "pyrun" } {
         $scpt = "\src\03-run_py.ps1 "
         $com = $mypf + $scpt + $pass
         # Write-Output $com
         Invoke-Expression $com
     }
-    "pyr" {
-        $com = ".`$PROFILE py " + $pass
-        # Write-Output $com
-        Invoke-Expression $com
-    }
-    "pyrun" {
-        $com = ".`$PROFILE py " + $pass
-        # Write-Output $com
-        Invoke-Expression $com
-    }
 
-    "pyt" {
+    { $_ -in "pyt", "pytest" } {
         $scpt = "\src\04-test_py.ps1 "
         $com = $mypf + $scpt + $pass
         # Write-Output $com
         Invoke-Expression $com
     }
-    "pytest" {
-        $com = ".`$PROFILE pyt " + $pass
-        # Write-Output $com
-        Invoke-Expression $com
-    }
 
-    "cd" {
+    { $_ -in "cd", "change" } {
         $scpt = "\src\06-change_dir.ps1 "
         $com = $mypf + $scpt + $pass
         # Write-Output $com

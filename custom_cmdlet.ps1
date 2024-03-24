@@ -1,3 +1,4 @@
+# Set-StrictMode -Version Latest
 
 function _get_map {
     param (
@@ -20,12 +21,11 @@ function _get_p_path {
 
 function _get_profile_file {
     param (
-        [string]
-        $scriptFile
+        [string] $File
     )
     $p = _get_p_path
 
-    $fi = "*" + $scriptFile + "*"
+    $fi = "*" + $File + "*"
     $res = (Get-ChildItem -Path $p -File -Depth 2 -Filter $fi)
     # $res
 
@@ -74,6 +74,3 @@ function _beeftext_date {
 }
 
 "Module Imported from '$($MyInvocation.ScriptName)'"
-_beeftext_date
-"Beeftext remapped"
-""
