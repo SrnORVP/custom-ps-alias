@@ -1,9 +1,9 @@
-terminal.txt
-.archive
-
 /.*
 */__pycache__
-dev
-address.conf
 
+.archive
+
+address.conf
 Microsoft.VSCode_profile.ps1
+dev.ps1
+terminal.txt

@@ -1,6 +1,7 @@
 
-Set-Alias -Name ppp -Value $PROFILE
+Set-Alias -Name pp -Value $PROFILE
 
+# Get-Module custom_cmdlet | Remove-Module
 (Get-ChildItem $profile).DirectoryName + ".\custom_cmdlet.ps1" | Import-Module
 
 
@@ -109,18 +110,4 @@ switch ($opts) {
         # Write-Output $com
         Invoke-Expression $com
     }
-
-    # "dev" {
-    #     Write-Output $args.Count
-
-    #     $scpt = '\src\00-dev.ps1 '
-    #     $com = $mypf + $scpt + $pass
-    #     # Write-Output $orig
-    #     # Write-Output $mypf
-    #     # Write-Output $com
-
-    #     Set-Location $mypf
-    #     Invoke-Expression $com
-    #     Set-Location $orig
-    # }
 }

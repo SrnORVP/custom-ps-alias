@@ -49,7 +49,31 @@ function _get_profile_file {
     }
 }
 
+function _beeftext_date {
+    $map = _get_map address.conf
+    $p = $map["BFT_COMB_DIR"]
+    $b = $map["BFT_DIR"]
 
+    $snip_hash = @{}
+    $snip_hash["#F"] = Get-Date -UFormat "%d%b%y"
+    $snip_hash["#D"] = Get-Date -UFormat "%y'%m'%d-"
+
+    $ob = Get-Content -Raw $p | ConvertFrom-Json
+    $co = $ob.combos
+
+    foreach ($elem in  $co) {
+        $val = $snip_hash[$elem.keyword]
+        if ($null -ne $val) {
+            $elem.snippet = $val
+        }
+    }
+
+    ConvertTo-Json $ob | Set-Content $p
+    Stop-Process -Name "Beeftext"
+    Start-Process -FilePath $b
+}
 
 "Module Imported from '$($MyInvocation.ScriptName)'"
+_beeftext_date
+"Beeftext remapped"
 ""
