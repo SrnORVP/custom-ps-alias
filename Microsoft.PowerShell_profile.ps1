@@ -4,7 +4,7 @@ Set-Alias -Name pp -Value $PROFILE
 # Get-Module custom_cmdlet | Remove-Module
 (Get-ChildItem $profile).DirectoryName + ".\custom_cmdlet.ps1" | Import-Module
 (Get-ChildItem $profile).DirectoryName + ".\custom_dev_cmd.ps1" | Import-Module
-_beeftext_date
+# ""
 
 # Capture the command for intentional calls
 if ($args.Count -eq 0) { $opts = "" } else {
@@ -33,12 +33,12 @@ if ($args.Count -eq 0) { $opts = "" } else {
 
 
 switch ($opts) {
-    "venv" {
-        $scpt = '\src\02-active_venv.ps1 '
-        $com = $mypf + $scpt + $pass
-        # Write-Output $com
-        Invoke-Expression $com
-    }
+    { $_ -in "pyv", "venv" }{ Invoke-Expression "_setup_pyo $pass" }
+
+    # $scpt = '\src\02-active_venv.ps1 '
+    # $com = $mypf + $scpt + $pass
+    # # Write-Output $com
+    # Invoke-Expression $com
 
     { $_ -in "rs", "rust" } {
         $scpt = "\src\05-run_rust.ps1 "

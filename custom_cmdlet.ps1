@@ -55,8 +55,8 @@ function _beeftext_date {
     $b = $map["BFT_DIR"]
 
     $snip_hash = @{}
-    $snip_hash["#F"] = Get-Date -UFormat "%d%b%y"
-    $snip_hash["#D"] = Get-Date -UFormat "%y'%m'%d-"
+    $snip_hash["#F"] = Get-Date -UFormat "%y'%m'%d-"
+    $snip_hash["#D"] = Get-Date -UFormat "%d%b%y"
 
     $ob = Get-Content -Raw $p | ConvertFrom-Json
     $co = $ob.combos
@@ -73,4 +73,5 @@ function _beeftext_date {
     Start-Process -FilePath $b
 }
 
+_beeftext_date
 "Module Imported from '$($MyInvocation.ScriptName)'"
