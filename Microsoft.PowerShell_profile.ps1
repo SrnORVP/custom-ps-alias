@@ -33,12 +33,13 @@ if ($args.Count -eq 0) { $opts = "" } else {
 
 
 switch ($opts) {
-    { $_ -in "pyv", "venv" }{ Invoke-Expression "_setup_pyo $pass" }
+    { $_ -in "pyv", "venv" } {
+        $scpt = '\src\02-active_venv.ps1 '
+        $com = $mypf + $scpt + $pass
+        # Write-Output $com
+        Invoke-Expression $com
+    }
 
-    # $scpt = '\src\02-active_venv.ps1 '
-    # $com = $mypf + $scpt + $pass
-    # # Write-Output $com
-    # Invoke-Expression $com
 
     { $_ -in "rs", "rust" } {
         $scpt = "\src\05-run_rust.ps1 "
@@ -49,12 +50,11 @@ switch ($opts) {
 
     { $_ -in "ta", "tauri" } { Invoke-Expression "_invoke_tauri $pass" }
 
-    { $_ -in "pyo", "pyo3" } {
-        $scpt = "\src\01-setup_pyo3.ps1 "
-        $com = $mypf + $scpt + $pass
-        # Write-Output $com
-        Invoke-Expression $com
-    }
+    { $_ -in "pyo", "pyo3" } { Invoke-Expression "_setup_pyo $pass" }
+    # $scpt = "\src\01-setup_pyo3.ps1 "
+    # $com = $mypf + $scpt + $pass
+    # Write-Output $com
+    # Invoke-Expression $com
 
     { $_ -in "py", "pyr" , "pyrun" } {
         $scpt = "\src\03-run_py.ps1 "

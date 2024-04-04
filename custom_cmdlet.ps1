@@ -69,8 +69,14 @@ function _beeftext_date {
     }
 
     ConvertTo-Json $ob | Set-Content $p
-    Stop-Process -Name "Beeftext"
+    try { Stop-Process -Name "Beeftext" -ErrorAction Stop }
+    catch [Microsoft.PowerShell.Commands.ProcessCommandException] { "No existing Beeftext, skipping." }
     Start-Process -FilePath $b
+}
+
+function _get_env_paths {
+    ($env:path) -split ";"
+    Get-ChildItem env:
 }
 
 _beeftext_date
