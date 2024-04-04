@@ -5,9 +5,8 @@ $file = $args[0]
 $curr = Get-Location
 $run_dir = $curr.Path + "\py-app\" + "$($file).py"
 
-Invoke-Expression ". $profile venv"
-# iex ".\02-active_venv.ps1"
-# powershell -nologo -Command ".\02-active_venv.ps1"
+_setup_venv -v
+# Invoke-Expression ". $profile venv"
 
 # Set-Location $run_dir
 python $run_dir

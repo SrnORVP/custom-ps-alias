@@ -35,6 +35,18 @@ function _setup_pyo {
     }
 }
 
+function  _setup_venv {
+    param (
+        [switch] $v
+    )
+    $vp = (_get_map address.conf)["VENV_DIR"]
+    Invoke-Expression $vp
+
+    if ($v) {
+        Write-Output "venv from: $($vp)"
+    }
+}
+
+
+
 "Module Imported from '$($MyInvocation.ScriptName)'"
-
-

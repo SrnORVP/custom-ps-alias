@@ -1,5 +1,4 @@
-﻿# 12Mar24
-# test_py.ps1 -m [marker]
+﻿# test_py.ps1 -m [marker]
 # test_py.ps1 -dbg
 
 if ($args[0] -eq "-dbg") {
@@ -10,16 +9,16 @@ if ($args[0] -eq "-dbg") {
 } else {
     $passthru = $args -join ' '
 }
+# echo $passthru
+
 
 $curr = Get-Location
 # $test_dir = $curr.Path + '\src-tauri' + '\py-app'
 $test_dir = $curr.Path
 
-$com = (Get-childitem $profile).DirectoryName + '\src\02-active_venv.ps1'
-Invoke-Expression $com
-
-# Invoke-Expression ". $profile venv"
-# powershell -nologo -Command ".\02-active_venv.ps1"
+_setup_venv -v
+# $com = (Get-childitem $profile).DirectoryName + '\src\02-active_venv.ps1'
+# Invoke-Expression $com
 
 Set-Location $test_dir
 
