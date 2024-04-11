@@ -9,18 +9,21 @@ $fi = "*" + $opts + "*"
 $map = _get_map address.conf
 
 if ($base -eq "ps") {
-        $p = _get_p_path
-        $p = (Get-item $p).Parent.FullName
-        # echo $p
-        $oper = $opts
-        $fi = "WindowsPowerShell"
-    }
+    $p = _get_p_path
+}
 else {
     $up = $base.ToUpper() + "_DIR"
     $p = $map[$up]
+    $p = _rep_path_alias $p
 }
 
-$res = (Get-ChildItem -Path $p -Directory -Depth 2 -Filter $fi)
+if ($null -eq $opts) {
+    Set-Location $p
+    exit
+}
+else {
+    $res = (Get-ChildItem -Path $p -Directory -Depth 2 -Filter $fi)
+}
 
 if ($res.Count -eq 1) {
     Write-Output "---------------------------------"
@@ -30,10 +33,10 @@ if ($res.Count -eq 1) {
     Set-Location $res.FullName
 
     switch ($oper) {
-        "-c" {code . }
-        "-code" {code . }
-        "-e" {explorer . }
-        "-expl" {explorer . }
+        "-c" { code . }
+        "-code" { code . }
+        "-e" { explorer . }
+        "-expl" { explorer . }
     }
 }
 

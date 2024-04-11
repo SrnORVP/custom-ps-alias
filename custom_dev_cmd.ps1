@@ -47,6 +47,11 @@ function  _setup_venv {
     }
 }
 
+function _run_obsidian () {
+    $p = (_get_map address.conf)["OBS_EXE_DIR"]
+    Start-Process -FilePath $(_rep_path_alias $p)
+    return
+}
 
 
 "Module Imported from '$($MyInvocation.ScriptName)'"

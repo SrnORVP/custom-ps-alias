@@ -19,11 +19,24 @@ function _get_p_path {
     return (Get-ChildItem $profile).DirectoryName
 }
 
+function _get_root {
+    $p = $(Get-Location).Path
+    # $p = $($MyInvocation.PSScriptRoot)
+    return $p
+
+}
+
 function _get_profile_file {
     param (
+        [switch] $d,
         [string] $File
     )
-    $p = _get_p_path
+    if ($d) {
+        $p = _get_root
+    }
+    else {
+        $p = _get_p_path
+    }
 
     $fi = "*" + $File + "*"
     $res = (Get-ChildItem -Path $p -File -Depth 2 -Filter $fi)
@@ -51,8 +64,11 @@ function _get_profile_file {
 
 function _beeftext_date {
     $map = _get_map address.conf
-    $p = $map["BFT_COMB_DIR"]
     $b = $map["BFT_DIR"]
+    $p = $map["BFT_COMB_DIR"]
+
+    $b = (get-item $b).FullName
+    $p = (get-item $p).FullName
 
     $snip_hash = @{}
     $snip_hash["#F"] = Get-Date -UFormat "%y'%m'%d-"
@@ -77,6 +93,25 @@ function _beeftext_date {
 function _get_env_paths {
     ($env:path) -split ";"
     Get-ChildItem env:
+}
+
+function _rep_path_alias {
+    param (
+        [string] $File
+    )
+
+    $a = $File.Split("%")
+
+    if ($a.Count -eq 3) {
+        $ep = (Get-Item $a[1])[0].value
+        return $ep + $a[2]
+    }
+    elseif ($a.Count -eq 1) {
+        return $File
+    }
+    else {
+        "Support only one env as surrounded %"
+    }
 }
 
 _beeftext_date

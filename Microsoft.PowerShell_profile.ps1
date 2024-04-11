@@ -4,7 +4,7 @@ Set-Alias -Name pp -Value $PROFILE
 # Get-Module custom_cmdlet | Remove-Module
 (Get-ChildItem $profile).DirectoryName + ".\custom_cmdlet.ps1" | Import-Module
 (Get-ChildItem $profile).DirectoryName + ".\custom_dev_cmd.ps1" | Import-Module
-# ""
+""
 
 # Capture the command for intentional calls
 if ($args.Count -eq 0) { $opts = "" } else {
@@ -15,7 +15,7 @@ if ($args.Count -eq 0) { $opts = "" } else {
     $mypf = (Get-item $profile).DirectoryName
 
     # simulate ctrl-L instead of Clear-Host
-    Write-Output ("`n" * ($Host.UI.RawUI.WindowSize.Height - 3))
+    Write-Output ("`n" * ($Host.UI.RawUI.WindowSize.Height - 4))
     $e = [char]27
     # Move cursor to 0;0
     Write-Output "$e[H"
@@ -51,10 +51,6 @@ switch ($opts) {
     { $_ -in "ta", "tauri" } { Invoke-Expression "_invoke_tauri $pass" }
 
     { $_ -in "pyo", "pyo3" } { Invoke-Expression "_setup_pyo $pass" }
-    # $scpt = "\src\01-setup_pyo3.ps1 "
-    # $com = $mypf + $scpt + $pass
-    # Write-Output $com
-    # Invoke-Expression $com
 
     { $_ -in "py", "pyr" , "pyrun" } {
         $scpt = "\src\03-run_py.ps1 "
@@ -76,4 +72,6 @@ switch ($opts) {
         # Write-Output $com
         Invoke-Expression $com
     }
+
+    { $_ -in "obs", "obsidian" } { Invoke-Expression "_run_obsidian $pass" }
 }
