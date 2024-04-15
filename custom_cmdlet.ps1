@@ -72,6 +72,7 @@ function _beeftext_date {
 
     $snip_hash = @{}
     $snip_hash["#F"] = Get-Date -UFormat "%y'%m'%d-"
+    $snip_hash["#FF"] = Get-Date -UFormat "%y%m%d'%H%M%S-"
     $snip_hash["#D"] = Get-Date -UFormat "%d%b%y"
 
     $ob = Get-Content -Raw $p | ConvertFrom-Json

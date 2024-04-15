@@ -10,6 +10,9 @@ $map = _get_map address.conf
 
 if ($base -eq "ps") {
     $p = _get_p_path
+    Set-Location $p
+    code .
+    exit
 }
 else {
     $up = $base.ToUpper() + "_DIR"
@@ -19,6 +22,7 @@ else {
 
 if ($null -eq $opts) {
     Set-Location $p
+    code .
     exit
 }
 else {
@@ -39,11 +43,9 @@ if ($res.Count -eq 1) {
         "-expl" { explorer . }
     }
 }
-
 elseif ($res.Count -eq 0) {
     Write-Output "None found."
 }
-
 else {
     Write-Output "More than one found, not moved."
     Write-Output "---------------------------------"
