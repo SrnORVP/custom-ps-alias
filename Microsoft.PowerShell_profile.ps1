@@ -1,6 +1,6 @@
 
 (Get-ChildItem $profile).DirectoryName + ".\custom_cmdlet.ps1" | Import-Module
-(Get-ChildItem $profile).DirectoryName + ".\custom_dev_cmd.ps1" | Import-Module
+(Get-ChildItem $profile).DirectoryName + ".\custom_user_cmd.ps1" | Import-Module
 ""
 
 # Capture the command for intentional calls

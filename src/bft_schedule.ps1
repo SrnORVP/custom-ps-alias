@@ -1,3 +1,5 @@
+echo "$((Get-ChildItem $profile).DirectoryName)\custom_cmdlet.ps1"
+(Get-ChildItem $profile).DirectoryName + "\custom_cmdlet.ps1" | Import-Module
 
 function _get_key_code () {
     Add-Type -AssemblyName System.Windows.Forms
@@ -71,6 +73,8 @@ function _keypress () {
 }
 
 
-Clear-Host
 # _get_key_code
-_keypress
+# _keypress
+
+_beeftext_date
+_start_beeftext

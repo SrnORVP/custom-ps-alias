@@ -1,9 +1,11 @@
 /.*
 */__pycache__
 
+
 .archive
+.doc
 
 address.conf
+
 Microsoft.VSCode_profile.ps1
 dev.ps1
-terminal.txt

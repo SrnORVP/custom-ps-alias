@@ -71,10 +71,7 @@ function _get_profile_file {
 
 function _beeftext_date {
     $map = _get_map address.conf
-    $b = $map["BFT_DIR"]
     $p = $map["BFT_COMB_DIR"]
-
-    $b = (get-item $b).FullName
     $p = (get-item $p).FullName
 
     $snip_hash = @{}
@@ -91,8 +88,15 @@ function _beeftext_date {
             $elem.snippet = $val
         }
     }
-
     ConvertTo-Json $ob | Set-Content $p
+}
+
+
+function _start_beeftext () {
+    $map = _get_map address.conf
+    $b = $map["BFT_DIR"]
+    $b = (get-item $b).FullName
+
     try { Stop-Process -Name "Beeftext" -ErrorAction Stop }
     catch [Microsoft.PowerShell.Commands.ProcessCommandException] { "No existing Beeftext, skipping." }
     Start-Process -FilePath $b
@@ -122,5 +126,5 @@ function _rep_path_alias {
     }
 }
 
-_beeftext_date
+# _beeftext_date
 "Module from '$($MyInvocation.ScriptName)'"
