@@ -1,5 +1,12 @@
 # Set-StrictMode -Version Latest
 
+Set-Alias -Name pp -Value $PROFILE
+Set-Alias -Name c -Value _code_alias
+Set-Alias -Name e -Value _explorer_alias
+
+function _code_alias() { code . }
+function _explorer_alias() { explorer.exe . }
+
 function _get_map {
     param (
         [string]
@@ -116,4 +123,4 @@ function _rep_path_alias {
 }
 
 _beeftext_date
-"Module Imported from '$($MyInvocation.ScriptName)'"
+"Module from '$($MyInvocation.ScriptName)'"

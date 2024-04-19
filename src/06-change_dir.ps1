@@ -11,7 +11,6 @@ $map = _get_map address.conf
 if ($base -eq "ps") {
     $p = _get_p_path
     Set-Location $p
-    code .
     exit
 }
 else {
@@ -22,7 +21,6 @@ else {
 
 if ($null -eq $opts) {
     Set-Location $p
-    code .
     exit
 }
 else {

@@ -1,7 +1,4 @@
 
-Set-Alias -Name pp -Value $PROFILE
-
-# Get-Module custom_cmdlet | Remove-Module
 (Get-ChildItem $profile).DirectoryName + ".\custom_cmdlet.ps1" | Import-Module
 (Get-ChildItem $profile).DirectoryName + ".\custom_dev_cmd.ps1" | Import-Module
 ""
@@ -33,13 +30,7 @@ if ($args.Count -eq 0) { $opts = "" } else {
 
 
 switch ($opts) {
-    { $_ -in "pyv", "venv" } {
-        $scpt = '\src\02-active_venv.ps1 '
-        $com = $mypf + $scpt + $pass
-        # Write-Output $com
-        Invoke-Expression $com
-    }
-
+    { $_ -in "pyv", "venv" } { Invoke-Expression "_setup_venv" }
 
     { $_ -in "rs", "rust" } {
         $scpt = "\src\05-run_rust.ps1 "
@@ -74,4 +65,10 @@ switch ($opts) {
     }
 
     { $_ -in "obs", "obsidian" } { Invoke-Expression "_run_obsidian $pass" }
+
+    # { $_ -in "dev" } {
+    #     Get-Module dev | Remove-Module
+    #     (Get-ChildItem $profile).DirectoryName + ".\dev.ps1" | Import-Module
+    #     _run_dev
+    # }
 }

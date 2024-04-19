@@ -54,4 +54,4 @@ function _run_obsidian () {
 }
 
 
-"Module Imported from '$($MyInvocation.ScriptName)'"
+"Module from '$($MyInvocation.ScriptName)'"
