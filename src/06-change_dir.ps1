@@ -45,10 +45,32 @@ elseif ($res.Count -eq 0) {
     Write-Output "None found."
 }
 else {
-    Write-Output "More than one found, not moved."
-    Write-Output "---------------------------------"
-    foreach ( $e in $res ) {
-        Resolve-Path $e.FullName
-        # Write-Output $res
+    switch -Regex ($oper) {
+        "\d" {
+            $p = [string] $res[$_ - 1].FullName
+            Set-Location $p
+        }
+        Default {
+            Write-Output "More than one found, not moved."
+            Write-Output "---------------------------------"
+            [array] $res.FullName
+        }
     }
+
+    # switch ($oper) {
+    #     "-f" {
+    #         # $res[0]
+    #         Resolve-Path $res[0].FullName
+    #         # code .
+    #     }
+    #     Default {
+    #         Write-Output "More than one found, not moved."
+    #         Write-Output "---------------------------------"
+    #         # Resolve-Path $res.FullName
+    #         foreach ( $e in $res ) {
+    #             Resolve-Path $e.FullName.value
+    #             # Write-Output $res
+    #         }
+    #     }
+    # }
 }

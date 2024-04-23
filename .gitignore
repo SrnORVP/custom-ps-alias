@@ -8,4 +8,4 @@
 address.conf
 
 Microsoft.VSCode_profile.ps1
-dev.ps1
+dev*.ps1

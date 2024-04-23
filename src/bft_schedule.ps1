@@ -1,80 +1,64 @@
-echo "$((Get-ChildItem $profile).DirectoryName)\custom_cmdlet.ps1"
 (Get-ChildItem $profile).DirectoryName + "\custom_cmdlet.ps1" | Import-Module
 
-function _get_key_code () {
-    Add-Type -AssemblyName System.Windows.Forms
 
-    $Signature = @'
-    [DllImport("user32.dll", CharSet=CharSet.Auto, ExactSpelling=true)]
-    public static extern short GetAsyncKeyState(int virtualKeyCode);
-'@
-    Add-Type -MemberDefinition $Signature -Name Keyboard -Namespace PsOneApi
+function _beeftext_date {
+    $map = _get_map address.conf
+    $p = $map["BFT_COMB_DIR"]
+    $p = (get-item $p).FullName
+
+    $snip_hash = @{}
+    $snip_hash["#F"] = Get-Date -UFormat "%y'%m'%d-"
+    $snip_hash["#D"] = Get-Date -UFormat "%d%b%y"
+
+    $ob = Get-Content -Raw $p | ConvertFrom-Json
+    $co = $ob.combos
+
+    foreach ($elem in  $co) {
+        $val = $snip_hash[$elem.keyword]
+        if ($null -ne $val) {
+            $elem.snippet = $val
+        }
+    }
+    ConvertTo-Json $ob | Set-Content $p
+}
+
+function _beeftext_update {
+    $map = _get_map address.conf
+    $p = $map["BFT_COMB_DIR"]
+    $p = (get-item $p).FullName
+
+    $ob = Get-Content -Raw $p | ConvertFrom-Json
+    $co = $ob.combos
 
     do {
+        $snip_hash = @{}
+        $snip_hash["#FF"] = Get-Date -UFormat "%y%m%d'%H%M%S-"
 
-        foreach ($keyVal in 0..600) {
-            if ([PsOneApi.Keyboard]::GetAsyncKeyState($keyVal) -eq -32767) {
-                $pressed = [System.Windows.Forms.Keys]$keyVal
-                echo $([string]$pressed + ", " + $keyVal)
+        foreach ($elem in  $co) {
+            $val = $snip_hash[$elem.keyword]
+            if ($null -ne $val) {
+                $elem.snippet = $val
             }
-
         }
+        ConvertTo-Json $ob | Set-Content $p
 
-        Start-Sleep -Milliseconds 100
-
-    } while ($true)
-
-    # 0..50 | ForEach-Object { '{0} = {1}' -f $_, [System.Windows.Forms.Keys]$_ }
-
-    # Add-Type -AssemblyName System.Windows.Forms
-    # [int][System.Windows.Forms.Keys]::ControlKey
-}
-
-
-function _keypress () {
-    $shift_num = '16'
-    $d3_num = '51'
-    $d_num = '68'
-
-    # $key = [Byte][Char]'I' ## Letter
-    # $key2 = '17' ## Ctrl
-    # $key3 = '18' ## Alt
-    $Signature = @'
-    [DllImport("user32.dll", CharSet=CharSet.Auto, ExactSpelling=true)]
-    public static extern short GetAsyncKeyState(int virtualKeyCode);
-'@
-    Add-Type -MemberDefinition $Signature -Name Keyboard -Namespace PsOneApi
-    do {
-
-        if ([PsOneApi.Keyboard]::GetAsyncKeyState($shift_num) -eq -32767 -and (-Not $k1)) {
-            $k1 = $true
-            Write-Host "true"
-        } else {
-            $k1 = $false
-            Write-Host "false"
-        }
-
-        if ([PsOneApi.Keyboard]::GetAsyncKeyState($d3_num) -eq -32767) {
-            $k2 = $true
-        }
-        if ([PsOneApi.Keyboard]::GetAsyncKeyState($d_num) -eq -32767) {
-            $k3 = $true
-        }
-
-        if ($k1 -and $k2 -and $k3) {
-            Write-Host "You pressed all"
-            $k1 = $false
-            $k2 = $false
-            $k3 = $false
-        }
-        Start-Sleep -Milliseconds 50
-
+        _start_beeftext
+        Write-Output "Updated at $(Get-Date -UFormat "%H:%M:%S")"
+        Start-Sleep -Milliseconds 300000
     } while ($true)
 }
 
 
-# _get_key_code
-# _keypress
+function _start_beeftext () {
+    $map = _get_map address.conf
+    $b = $map["BFT_DIR"]
+    $b = (get-item $b).FullName
+
+    try { Stop-Process -Name "Beeftext" -ErrorAction Stop }
+    catch [Microsoft.PowerShell.Commands.ProcessCommandException] { "No existing Beeftext, skipping." }
+    Start-Process -FilePath $b
+}
+
 
 _beeftext_date
-_start_beeftext
+_beeftext_update

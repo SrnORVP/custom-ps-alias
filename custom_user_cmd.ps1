@@ -53,5 +53,4 @@ function _run_obsidian () {
     return
 }
 
-
-"Module from '$($MyInvocation.ScriptName)'"
+">>$($MyInvocation.ScriptName)"

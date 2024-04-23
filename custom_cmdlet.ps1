@@ -3,6 +3,7 @@
 Set-Alias -Name pp -Value $PROFILE
 Set-Alias -Name c -Value _code_alias
 Set-Alias -Name e -Value _explorer_alias
+Set-Alias -Name pt -Value poetry
 
 function _code_alias() { code . }
 function _explorer_alias() { explorer.exe . }
@@ -69,38 +70,7 @@ function _get_profile_file {
     }
 }
 
-function _beeftext_date {
-    $map = _get_map address.conf
-    $p = $map["BFT_COMB_DIR"]
-    $p = (get-item $p).FullName
 
-    $snip_hash = @{}
-    $snip_hash["#F"] = Get-Date -UFormat "%y'%m'%d-"
-    $snip_hash["#FF"] = Get-Date -UFormat "%y%m%d'%H%M%S-"
-    $snip_hash["#D"] = Get-Date -UFormat "%d%b%y"
-
-    $ob = Get-Content -Raw $p | ConvertFrom-Json
-    $co = $ob.combos
-
-    foreach ($elem in  $co) {
-        $val = $snip_hash[$elem.keyword]
-        if ($null -ne $val) {
-            $elem.snippet = $val
-        }
-    }
-    ConvertTo-Json $ob | Set-Content $p
-}
-
-
-function _start_beeftext () {
-    $map = _get_map address.conf
-    $b = $map["BFT_DIR"]
-    $b = (get-item $b).FullName
-
-    try { Stop-Process -Name "Beeftext" -ErrorAction Stop }
-    catch [Microsoft.PowerShell.Commands.ProcessCommandException] { "No existing Beeftext, skipping." }
-    Start-Process -FilePath $b
-}
 
 function _get_env_paths {
     ($env:path) -split ";"
@@ -126,5 +96,4 @@ function _rep_path_alias {
     }
 }
 
-# _beeftext_date
-"Module from '$($MyInvocation.ScriptName)'"
+">>$($MyInvocation.ScriptName)"
