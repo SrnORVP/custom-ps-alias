@@ -32,7 +32,7 @@ function _beeftext_update {
 
     do {
         $snip_hash = @{}
-        $snip_hash["#FF"] = Get-Date -UFormat "%y%m%d'%H%M%S-"
+        $snip_hash["#FF"] = Get-Date -UFormat "%y%m%d'%H%M00-"
 
         foreach ($elem in  $co) {
             $val = $snip_hash[$elem.keyword]
@@ -44,10 +44,9 @@ function _beeftext_update {
 
         _start_beeftext
         Write-Output "Updated at $(Get-Date -UFormat "%H:%M:%S")"
-        Start-Sleep -Milliseconds 300000
+        Start-Sleep -Milliseconds 600000
     } while ($true)
 }
-
 
 function _start_beeftext () {
     $map = _get_map address.conf
@@ -55,10 +54,9 @@ function _start_beeftext () {
     $b = (get-item $b).FullName
 
     try { Stop-Process -Name "Beeftext" -ErrorAction Stop }
-    catch [Microsoft.PowerShell.Commands.ProcessCommandException] { "No existing Beeftext, skipping." }
+    catch [Microsoft.PowerShell.Commands.ProcessCommandException] { "No existing Beeftext, opening fresh." }
     Start-Process -FilePath $b
 }
-
 
 _beeftext_date
 _beeftext_update

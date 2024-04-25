@@ -1,5 +1,6 @@
 
 (Get-ChildItem $profile).DirectoryName + ".\custom_cmdlet.ps1" | Import-Module
+(Get-ChildItem $profile).DirectoryName + ".\custom_alias.ps1" | Import-Module
 (Get-ChildItem $profile).DirectoryName + ".\custom_user_cmd.ps1" | Import-Module
 ""
 
@@ -11,13 +12,7 @@ if ($args.Count -eq 0) { $opts = "" } else {
     $orig = Get-Location
     $mypf = (Get-item $profile).DirectoryName
 
-    # simulate ctrl-L instead of Clear-Host
-    Write-Output ("`n" * ($Host.UI.RawUI.WindowSize.Height - 4))
-    $e = [char]27
-    # Move cursor to 0;0
-    Write-Output "$e[H"
-    # Erase down/right
-    Write-Output "$e[J"
+    _ctrl_l_console
 
     if ($args.Count -eq 1) {
         $pass = ''
@@ -27,7 +22,6 @@ if ($args.Count -eq 0) { $opts = "" } else {
         $pass = $args[1..$e] -join ' '
     }
 }
-
 
 switch ($opts) {
     { $_ -in "pyv", "venv" } { Invoke-Expression "_setup_venv" }
@@ -63,8 +57,6 @@ switch ($opts) {
         # Write-Output $com
         Invoke-Expression $com
     }
-
-    { $_ -in "obs", "obsidian" } { Invoke-Expression "_run_obsidian $pass" }
 
     # { $_ -in "dev" } {
     #     Get-Module dev | Remove-Module

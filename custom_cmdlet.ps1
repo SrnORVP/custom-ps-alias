@@ -1,12 +1,14 @@
 # Set-StrictMode -Version Latest
 
-Set-Alias -Name pp -Value $PROFILE
-Set-Alias -Name c -Value _code_alias
-Set-Alias -Name e -Value _explorer_alias
-Set-Alias -Name pt -Value poetry
-
-function _code_alias() { code . }
-function _explorer_alias() { explorer.exe . }
+function _ctrl_l_console() {
+    # simulate ctrl-L instead of Clear-Host
+    Write-Output ("`n" * ($Host.UI.RawUI.WindowSize.Height - 4))
+    $e = [char]27
+    # Move cursor to 0;0
+    Write-Output "$e[H"
+    # Erase down/right
+    Write-Output "$e[J"
+}
 
 function _get_map {
     param (
@@ -14,9 +16,7 @@ function _get_map {
         $filepath
     )
     $f = _get_profile_file $filepath
-    $dirMap = Get-Content -raw $f | ConvertFrom-StringData
-
-    return $dirMap
+    return = Get-Content -raw $f | ConvertFrom-StringData
 }
 
 function _done {
@@ -31,7 +31,6 @@ function _get_root {
     $p = $(Get-Location).Path
     # $p = $($MyInvocation.PSScriptRoot)
     return $p
-
 }
 
 function _get_profile_file {
@@ -48,15 +47,12 @@ function _get_profile_file {
 
     $fi = "*" + $File + "*"
     $res = (Get-ChildItem -Path $p -File -Depth 2 -Filter $fi)
-    # $res
 
     if ($null -eq $res) {
         Write-Output "None found."
     }
     else {
         $res = $res.FullName
-        # $res
-        # $res.GetType()
 
         if ($res -is [string]) {
             return $res
@@ -70,8 +66,6 @@ function _get_profile_file {
     }
 }
 
-
-
 function _get_env_paths {
     ($env:path) -split ";"
     Get-ChildItem env:
@@ -81,7 +75,6 @@ function _rep_path_alias {
     param (
         [string] $File
     )
-
     $a = $File.Split("%")
 
     if ($a.Count -eq 3) {

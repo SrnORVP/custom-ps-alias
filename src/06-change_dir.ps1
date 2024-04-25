@@ -28,18 +28,12 @@ else {
 }
 
 if ($res.Count -eq 1) {
-    Write-Output "---------------------------------"
+    Write-Output "------------------------------------------------------------------"
     Write-Output "Matched and moved"
-    Resolve-Path $res.FullName
-    Write-Output "---------------------------------"
+    [array] $res.FullName
+    Write-Output "------------------------------------------------------------------"
+    Write-Output ""
     Set-Location $res.FullName
-
-    switch ($oper) {
-        "-c" { code . }
-        "-code" { code . }
-        "-e" { explorer . }
-        "-expl" { explorer . }
-    }
 }
 elseif ($res.Count -eq 0) {
     Write-Output "None found."
@@ -52,25 +46,10 @@ else {
         }
         Default {
             Write-Output "More than one found, not moved."
-            Write-Output "---------------------------------"
+            Write-Output "------------------------------------------------------------------"
             [array] $res.FullName
+            Write-Output "------------------------------------------------------------------"
+            Write-Output ""
         }
     }
-
-    # switch ($oper) {
-    #     "-f" {
-    #         # $res[0]
-    #         Resolve-Path $res[0].FullName
-    #         # code .
-    #     }
-    #     Default {
-    #         Write-Output "More than one found, not moved."
-    #         Write-Output "---------------------------------"
-    #         # Resolve-Path $res.FullName
-    #         foreach ( $e in $res ) {
-    #             Resolve-Path $e.FullName.value
-    #             # Write-Output $res
-    #         }
-    #     }
-    # }
 }
