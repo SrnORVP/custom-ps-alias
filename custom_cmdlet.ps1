@@ -16,7 +16,7 @@ function _get_map {
         $filepath
     )
     $f = _get_profile_file $filepath
-    return = Get-Content -raw $f | ConvertFrom-StringData
+    return Get-Content -raw $f | ConvertFrom-StringData
 }
 
 function _done {
